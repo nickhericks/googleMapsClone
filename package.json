@@ -1,0 +1,11 @@
+{
+  "name": "googlemapsclone",
+  "version": "1.0.0",
+  "description": "> An accordion component that allows for content to be shown/hidden based on a user action.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
