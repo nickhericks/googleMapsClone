@@ -18,7 +18,24 @@
   </head>
 
   <body>
-    <div id="map"></div>
+		<form action="#" class="controls" autocomplete="off">
+			<!-- ... -->
+
+			<div class="controls__search-box">
+				<label class="is-invisible" for="startpoint">Start point</label>
+				<input type="search" id="startpoint" name="startpoint" placeholder="Choose your starting point" />
+				<span class="search-box__icon"></span>
+			</div>
+
+			<div class="controls__search-box">
+				<label class="is-invisible" for="destination">Destination</label>
+				<input id="destination" type="search" name="destination" placeholder="Choose your destination" />
+				<span class="search-box__icon"></span>
+			</div>
+		</form>
+
+		<div id="map"></div>
+		
 
     <script src="js/main.js"></script>
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&callback=initMap"></script> -->

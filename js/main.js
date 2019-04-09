@@ -17,7 +17,7 @@ const fetchWithJSONP = (uri, callback, err = console.error) => {
 	script.addEventListener('error', err)
 }
 
-fetchWithJSONP('https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&callback=initMap', initMap);
+fetchWithJSONP('https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&libraries=places&callback=initMap', initMap);
 
 
 
