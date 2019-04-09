@@ -8,7 +8,7 @@
 
 	<title>Google Maps Clone</title>
 
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,600,700" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,600,700" rel="stylesheet" />
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/reset.css" />
 	<link rel="stylesheet" href="css/styles.css" />
@@ -30,22 +30,33 @@
 		<div class="controls__body">
 			<div class="controls__search-box">
 				<label class="is-invisible" for="startpoint">Starting point</label>
-				<input type="search" id="startpoint" name="startpoint" placeholder="Choose your starting point" />
+				<input type="search" name="startpoint" id="startpoint" data-type="autocomplete"
+					placeholder="Choose your starting point" />
 				<span class="search-box__icon"></span>
 			</div>
 
 			<div class="controls__search-box">
-				<label class="is-invisible" for="destination">Destination</label>
-				<input id="destination" type="search" name="destination" placeholder="Choose your destination" />
+				<label class="is-invisible" for="destination" data-type="autocomplete">Destination</label>
+				<input type="search" name="destination" id="destination" data-type="autocomplete"
+					placeholder="Choose your destination" />
 				<span class="search-box__icon"></span>
 			</div>
 
 			<div class="controls__buttons">
 				<button type="submit" class="primary">Get directions</button>
+				<button class="secondary" hidden>
+					<span>Add new destination</span>
+				</button>
 			</div>
 		</div>
+
+		<div id="panel" style="background: white;"></div>
 	</form>
+
 	<script src="js/main.js"></script>
+	<!--
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOSppjMrbl5YQAUla6O9WNAL1w2zeWtLc&callback=initMap"></script>
+    -->
 </body>
 
 </html>

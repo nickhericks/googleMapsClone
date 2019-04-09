@@ -4,7 +4,7 @@
 // ===============
 
 // Please change this to use your own API key!
-const apiKey = 'AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o'
+const apiKey = 'AIzaSyBOSppjMrbl5YQAUla6O9WNAL1w2zeWtLc'
 const gmapsURI = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
 
 const fetchWithJSONP = (uri, callback, err = console.error) => {
@@ -38,35 +38,11 @@ function initMap() {
 		el.autocompleteWidget = autocomplete
 	})
 
-	form.addEventListener('submit', async evt => {
+	form.addEventListener('submit', evt => {
 		evt.preventDefault()
 
-		let origin = searchFields[0].autocompleteWidget.getPlace()
-		let destination = searchFields[1].autocompleteWidget.getPlace()
-
-		if (typeof origin !== 'object' || !origin.formatted_address) {
-			const dropdown = document.querySelectorAll('.pac-container')[0]
-			const queryEl = dropdown.querySelector('.pac-item-query')
-			const queryText = queryEl.innerHTML
-				.replace('<span class="pac-matched">', '')
-				.replace('</span>', '')
-			const street = queryEl.nextElementSibling.textContent
-			const address = `${queryText}, ${street}`
-			origin = { formatted_address: address }
-			searchFields[0].value = address
-		}
-
-		if (typeof destination !== 'object' || !destination.formatted_address) {
-			const dropdown = document.querySelectorAll('.pac-container')[1]
-			const queryEl = dropdown.querySelector('.pac-item-query')
-			const queryText = queryEl.innerHTML
-				.replace('<span class="pac-matched">', '')
-				.replace('</span>', '')
-			const street = queryEl.nextElementSibling.textContent
-			const address = `${queryText}, ${street}`
-			destination = { formatted_address: address }
-			searchFields[1].value = address
-		}
+		const origin = searchFields[0].autocompleteWidget.getPlace()
+		const destination = searchFields[1].autocompleteWidget.getPlace()
 
 		const directionsService = new google.maps.DirectionsService()
 		const request = {
@@ -79,7 +55,8 @@ function initMap() {
 			if (status === 'OK') {
 				new google.maps.DirectionsRenderer({
 					map,
-					directions: result
+					directions: result,
+					panel: document.querySelector('#panel')
 				})
 			} else {
 				console.error(status)
