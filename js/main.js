@@ -1,8 +1,11 @@
 /* globals google */
 /* eslint-disable no-new  */
+// # Start editing your JavaScript here
+// ===============
 
-
-
+// Please change this to use your own API key!
+const apiKey = 'AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o'
+const gmapsURI = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
 
 const fetchWithJSONP = (uri, callback, err = console.error) => {
 	const script = document.createElement('script')
@@ -17,69 +20,73 @@ const fetchWithJSONP = (uri, callback, err = console.error) => {
 	script.addEventListener('error', err)
 }
 
-fetchWithJSONP('https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&libraries=places&callback=initMap', initMap);
-
-
-
-
-function initMap () {
-  const mapDiv = document.querySelector('#map')
-  new google.maps.Map(mapDiv, {
+function initMap() {
+	const mapDiv = document.querySelector('#map')
+	const map = new google.maps.Map(mapDiv, {
 		center: { lat: 1.3521, lng: 103.8198 },
-    zoom: 13
+		zoom: 13
 	})
 
-	const places = {
-		artScienceMuseum: {
-			latlng: { lat: 1.2863, lng: 103.8593 },
-			addr: '6 Bayfront Ave, Singapore 018974'
-		},
-		gardensByTheBay: {
-			latlng: { lat: 1.2816, lng: 103.8636 },
-			addr: '18 Marina Gardens Dr, Singapore 018953'
-		},
-		littleIndia: {
-			latlng: { lat: 1.3066, lng: 103.8518 },
-			addr: 'Little India, Singapore'
-		},
-		sentosa: {
-			latlng: { lat: 1.2494, lng: 103.8303 },
-			addr: 'Sentosa, Singapore'
-		},
-		singaporeZoo: {
-			latlng: { lat: 1.4043, lng: 103.7930 },
-			addr: '80 Mandai Lake Rd, Singapore 729826'
+	const form = document.querySelector('form')
+	const searchFields = [...form.querySelectorAll('input')]
+
+	searchFields.forEach(el => {
+		const autocomplete = new google.maps.places.Autocomplete(el, {
+			fields: ['formatted_address']
+		})
+		autocomplete.bindTo('bounds', map)
+		el.autocompleteWidget = autocomplete
+	})
+
+	form.addEventListener('submit', async evt => {
+		evt.preventDefault()
+
+		let origin = searchFields[0].autocompleteWidget.getPlace()
+		let destination = searchFields[1].autocompleteWidget.getPlace()
+
+		if (typeof origin !== 'object' || !origin.formatted_address) {
+			const dropdown = document.querySelectorAll('.pac-container')[0]
+			const queryEl = dropdown.querySelector('.pac-item-query')
+			const queryText = queryEl.innerHTML
+				.replace('<span class="pac-matched">', '')
+				.replace('</span>', '')
+			const street = queryEl.nextElementSibling.textContent
+			const address = `${queryText}, ${street}`
+			origin = { formatted_address: address }
+			searchFields[0].value = address
 		}
-	}
 
-	const request = {
-		origin: places.singaporeZoo.latlng,
-		destination: places.sentosa.addr,
-		travelMode: 'DRIVING'
-	}
+		if (typeof destination !== 'object' || !destination.formatted_address) {
+			const dropdown = document.querySelectorAll('.pac-container')[1]
+			const queryEl = dropdown.querySelector('.pac-item-query')
+			const queryText = queryEl.innerHTML
+				.replace('<span class="pac-matched">', '')
+				.replace('</span>', '')
+			const street = queryEl.nextElementSibling.textContent
+			const address = `${queryText}, ${street}`
+			destination = { formatted_address: address }
+			searchFields[1].value = address
+		}
 
-	const directionsService = new google.maps.DirectionsService();
+		const directionsService = new google.maps.DirectionsService()
+		const request = {
+			origin: origin.formatted_address,
+			destination: destination.formatted_address,
+			travelMode: 'DRIVING'
+		}
 
-
-	
-	
-
-
-	directionsService.route(request, (result, status) => {
-		if (status === 'OK') {
-			new google.maps.DirectionsRenderer({
-				map,
-				directions: result
-			})
-		} else {
-			console.error(status)
-			console.log(result)		}
+		directionsService.route(request, (result, status) => {
+			if (status === 'OK') {
+				new google.maps.DirectionsRenderer({
+					map,
+					directions: result
+				})
+			} else {
+				console.error(status)
+				console.log(result)
+			}
+		})
 	})
-
-
-
-
-
-	
-	
 }
+
+fetchWithJSONP(gmapsURI, initMap)

@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Google Maps Clone</title>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,600,700"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/prefixfree.js"></script>
-  </head>
+	<title>Google Maps Clone</title>
 
-  <body>
-		<form action="#" class="controls" autocomplete="off">
-			<!-- ... -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,600,700" />
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+	<script src="js/prefixfree.js"></script>
+</head>
 
+<body>
+	<div id="map"></div>
+
+	<form action="#" class="controls" autocomplete="off">
+		<header>
+			<h1>Get driving directions</h1>
+			<p>
+				This app is a lite version of Google Maps. You can get driving
+				directions from one location to another.
+			</p>
+		</header>
+
+		<div class="controls__body">
 			<div class="controls__search-box">
-				<label class="is-invisible" for="startpoint">Start point</label>
+				<label class="is-invisible" for="startpoint">Starting point</label>
 				<input type="search" id="startpoint" name="startpoint" placeholder="Choose your starting point" />
 				<span class="search-box__icon"></span>
 			</div>
@@ -32,12 +39,13 @@
 				<input id="destination" type="search" name="destination" placeholder="Choose your destination" />
 				<span class="search-box__icon"></span>
 			</div>
-		</form>
 
-		<div id="map"></div>
-		
+			<div class="controls__buttons">
+				<button type="submit" class="primary">Get directions</button>
+			</div>
+		</div>
+	</form>
+	<script src="js/main.js"></script>
+</body>
 
-    <script src="js/main.js"></script>
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&callback=initMap"></script> -->
-  </body>
 </html>
