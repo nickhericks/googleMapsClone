@@ -4,14 +4,20 @@
 
 
 
-const fetchWithJSONP = (uri) => {
+const fetchWithJSONP = (uri, callback, err = console.error) => {
 	const script = document.createElement('script')
-	script.src = uri;
+	const prefix = uri.indexOf('?' + 1) ? '&' : '?'
+
+	if (typeof callback !== 'function') throw Error('callback must be a function')
+	if (typeof err !== 'function') throw Error('err must be a function')
+
+	script.src = `${uri}${prefix}callback=${callback.name}`
 	document.body.appendChild(script)
 	document.body.removeChild(script)
+	script.addEventListener('error', err)
 }
 
-fetchWithJSONP('https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&callback=initMap');
+fetchWithJSONP('https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw8lj2GEo0fJAlO8wfk0o&callback=initMap', initMap);
 
 
 
@@ -19,7 +25,61 @@ fetchWithJSONP('https://maps.googleapis.com/maps/api/js?key=AIzaSyDvmbsNbSZIMfMw
 function initMap () {
   const mapDiv = document.querySelector('#map')
   new google.maps.Map(mapDiv, {
-		center: { lat: -25.9483026, lng: 32.6020333 },
-    zoom: 15
-  })
+		center: { lat: 1.3521, lng: 103.8198 },
+    zoom: 13
+	})
+
+	const places = {
+		artScienceMuseum: {
+			latlng: { lat: 1.2863, lng: 103.8593 },
+			addr: '6 Bayfront Ave, Singapore 018974'
+		},
+		gardensByTheBay: {
+			latlng: { lat: 1.2816, lng: 103.8636 },
+			addr: '18 Marina Gardens Dr, Singapore 018953'
+		},
+		littleIndia: {
+			latlng: { lat: 1.3066, lng: 103.8518 },
+			addr: 'Little India, Singapore'
+		},
+		sentosa: {
+			latlng: { lat: 1.2494, lng: 103.8303 },
+			addr: 'Sentosa, Singapore'
+		},
+		singaporeZoo: {
+			latlng: { lat: 1.4043, lng: 103.7930 },
+			addr: '80 Mandai Lake Rd, Singapore 729826'
+		}
+	}
+
+	const request = {
+		origin: places.singaporeZoo.latlng,
+		destination: places.sentosa.addr,
+		travelMode: 'DRIVING'
+	}
+
+	const directionsService = new google.maps.DirectionsService();
+
+
+	
+	
+
+
+	directionsService.route(request, (result, status) => {
+		if (status === 'OK') {
+			new google.maps.DirectionsRenderer({
+				map,
+				directions: result
+			})
+		} else {
+			console.error(status)
+			console.log(result)		}
+	})
+
+
+
+
+
+	
+	
 }
